@@ -4,767 +4,644 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Long COVID Symptom Pathway — Life Beyond Long COVID</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: 'Lato', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
       background: #f9f8f5;
       color: #1a1a18;
       min-height: 100vh;
       padding: 2rem 1rem 4rem;
     }
 
-    .page-header {
-      max-width: 600px;
-      margin: 0 auto 2rem;
-    }
-    .page-header .site-label {
-      font-size: 11px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #888780;
-      margin-bottom: 10px;
-    }
-    .page-header h1 {
-      font-size: 22px;
-      font-weight: 500;
-      color: #1a1a18;
-      line-height: 1.3;
-      margin-bottom: 10px;
-    }
-    .page-header p {
-      font-size: 14px;
-      color: #5f5e5a;
-      line-height: 1.6;
-    }
-    .page-header .substack-link {
-      display: inline-block;
-      margin-top: 12px;
-      font-size: 13px;
-      color: #534AB7;
-      text-decoration: none;
-    }
+    .page-header { max-width: 600px; margin: 0 auto 2rem; }
+    .page-header .site-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #888780; margin-bottom: 10px; }
+    .page-header h1 { font-size: 22px; font-weight: 700; color: #1a1a18; line-height: 1.3; margin-bottom: 10px; }
+    .page-header p { font-size: 14px; color: #5f5e5a; line-height: 1.6; }
+    .page-header .substack-link { display: inline-block; margin-top: 12px; font-size: 13px; color: #534AB7; text-decoration: none; }
     .page-header .substack-link:hover { text-decoration: underline; }
 
-    .chart-wrap {
-      max-width: 600px;
-      margin: 0 auto;
-    }
+    .chart-wrap { max-width: 600px; margin: 0 auto; }
+    .chart-title { font-size: 11px; font-weight: 700; color: #888780; margin-bottom: 1.25rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .node-grid { display: flex; flex-direction: column; align-items: center; gap: 0; }
 
-    .chart-title {
-      font-size: 11px;
-      font-weight: 500;
-      color: #888780;
-      margin-bottom: 1.25rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
+    .entry-box { background: #f1efe8; border: 0.5px solid #b4b2a9; border-radius: 12px; padding: 14px 20px; text-align: center; width: 100%; }
+    .entry-box .label { font-size: 11px; color: #888780; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .entry-box .title { font-size: 15px; font-weight: 700; color: #1a1a18; }
 
-    .node-grid {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
-    }
+    .connector { display: flex; flex-direction: column; align-items: center; height: 28px; justify-content: center; width: 100%; }
+    .connector-line { width: 1px; background: #b4b2a9; flex: 1; }
 
-    .entry-box {
-      background: #f1efe8;
-      border: 0.5px solid #b4b2a9;
-      border-radius: 12px;
-      padding: 14px 20px;
-      text-align: center;
-      width: 100%;
-    }
-    .entry-box .label {
-      font-size: 11px;
-      color: #888780;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .entry-box .title {
-      font-size: 15px;
-      font-weight: 500;
-      color: #1a1a18;
-    }
+    .question-box { background: #ffffff; border: 0.5px solid #b4b2a9; border-radius: 12px; padding: 14px 20px; text-align: center; width: 100%; }
+    .question-box .q-label { font-size: 11px; font-weight: 700; color: #888780; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+    .question-box .q-text { font-size: 14px; color: #1a1a18; line-height: 1.5; }
 
-    .connector {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 28px;
-      justify-content: center;
-      width: 100%;
-    }
-    .connector-line {
-      width: 1px;
-      background: #b4b2a9;
-      flex: 1;
-    }
-
-    .question-box {
-      background: #ffffff;
-      border: 0.5px solid #b4b2a9;
-      border-radius: 12px;
-      padding: 14px 20px;
-      text-align: center;
-      width: 100%;
-    }
-    .question-box .q-label {
-      font-size: 11px;
-      font-weight: 500;
-      color: #888780;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 5px;
-    }
-    .question-box .q-text {
-      font-size: 14px;
-      color: #1a1a18;
-      line-height: 1.5;
-    }
-
-    .branch-row {
-      display: grid;
-      gap: 10px;
-      width: 100%;
-    }
+    .branch-row { display: grid; gap: 10px; width: 100%; }
     .branch-row.two { grid-template-columns: 1fr 1fr; }
     .branch-row.four { grid-template-columns: 1fr 1fr 1fr 1fr; }
+    @media (max-width: 500px) { .branch-row.four { grid-template-columns: 1fr 1fr; } }
 
-    @media (max-width: 500px) {
-      .branch-row.four { grid-template-columns: 1fr 1fr; }
-    }
+    .answer-btn { background: #ffffff; border: 0.5px solid #d3d1c7; border-radius: 8px; padding: 10px; font-size: 13px; font-family: inherit; color: #1a1a18; cursor: pointer; text-align: center; line-height: 1.4; transition: background 0.12s, border-color 0.12s; }
+    .answer-btn:hover { background: #f1efe8; border-color: #b4b2a9; }
+    .answer-icon { font-size: 16px; display: block; margin-bottom: 4px; }
 
-    .answer-btn {
-      background: #ffffff;
-      border: 0.5px solid #d3d1c7;
-      border-radius: 8px;
-      padding: 10px 10px;
-      font-size: 13px;
-      font-family: inherit;
-      color: #1a1a18;
-      cursor: pointer;
-      text-align: center;
-      line-height: 1.4;
-      transition: background 0.12s, border-color 0.12s;
-    }
-    .answer-btn:hover {
-      background: #f1efe8;
-      border-color: #b4b2a9;
-    }
-    .answer-icon {
-      font-size: 16px;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .step {
-      display: none;
-      width: 100%;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
-    }
+    .step { display: none; width: 100%; flex-direction: column; align-items: center; gap: 0; }
     .step.active { display: flex; }
 
-    /* Cluster cards */
-    .cluster-card {
-      width: 100%;
-      border-radius: 12px;
-      border: 0.5px solid;
-      padding: 18px 20px 16px;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.3s, transform 0.3s;
-      display: none;
-    }
+    .back-btn { margin-top: 10px; font-size: 12px; font-family: inherit; color: #888780; background: none; border: none; padding: 4px 8px; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+    .back-btn:hover { color: #5f5e5a; }
+
+    .breadcrumb { width: 100%; margin-bottom: 16px; display: none; }
+    .breadcrumb.visible { display: block; }
+    .breadcrumb-inner { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 10px 14px; background: #f1efe8; border: 0.5px solid #b4b2a9; border-radius: 8px; }
+    .breadcrumb-label { font-size: 11px; font-weight: 700; color: #888780; text-transform: uppercase; letter-spacing: 0.05em; margin-right: 4px; white-space: nowrap; }
+    .crumb { font-size: 12px; color: #5f5e5a; }
+    .crumb-sep { font-size: 12px; color: #b4b2a9; }
+
+    #outcome { width: 100%; display: none; flex-direction: column; align-items: center; }
+
+    .cluster-card { width: 100%; border-radius: 12px; border: 0.5px solid; padding: 24px 22px 22px; opacity: 0; transform: translateY(6px); transition: opacity 0.3s, transform 0.3s; display: none; }
     .cluster-card.visible { opacity: 1; transform: translateY(0); }
 
-    .cluster-tag {
-      font-size: 11px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 6px;
-    }
-    .cluster-name {
-      font-size: 16px;
-      font-weight: 500;
-      margin-bottom: 8px;
-      line-height: 1.3;
-    }
-    .cluster-desc {
-      font-size: 13px;
-      line-height: 1.65;
-      margin-bottom: 14px;
-    }
+    .cluster-eyebrow { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .cluster-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .cluster-eyebrow-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
 
-    .guidance-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    @media (max-width: 440px) {
-      .guidance-grid { grid-template-columns: 1fr; }
-    }
+    .cluster-headline { font-size: 19px; font-weight: 700; line-height: 1.3; margin-bottom: 12px; }
+    .cluster-desc { font-size: 13px; line-height: 1.75; margin-bottom: 22px; padding-bottom: 20px; border-bottom: 0.5px solid; }
 
-    .guidance-col {
-      border-radius: 8px;
-      padding: 10px 12px;
-    }
-    .guidance-col .g-head {
-      font-size: 11px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
-    }
-    .g-head.do  { color: #3B6D11; }
-    .g-head.avoid { color: #993C1D; }
+    .section-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .section-icon { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .do-icon { background: #EAF3DE; color: #3B6D11; }
+    .avoid-icon { background: #FAECE7; color: #993C1D; }
+    .section-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; }
+    .do-label { color: #3B6D11; }
+    .avoid-label { color: #993C1D; }
 
-    .guidance-col ul { padding-left: 14px; }
-    .guidance-col ul li {
-      font-size: 12px;
-      line-height: 1.55;
-      margin-bottom: 4px;
-    }
+    .guidance-list { list-style: none; padding: 0; margin-bottom: 24px; }
+    .guidance-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 8px; margin-bottom: 6px; }
+    .do-item { background: #EAF3DE; }
+    .avoid-item { background: #FAECE7; }
+    .g-icon { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+    .do-item .g-icon { color: #3B6D11; }
+    .avoid-item .g-icon { color: #993C1D; }
+    .g-text { font-size: 13px; line-height: 1.6; }
+    .do-item .g-text { color: #27500A; }
+    .avoid-item .g-text { color: #712B13; }
+    .g-lead { font-weight: 700; display: block; margin-bottom: 2px; }
 
-    .article-links {
-      border-top: 0.5px solid;
-      padding-top: 12px;
-    }
-    .links-label {
-      font-size: 11px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 7px;
-    }
-    .article-link {
-      display: block;
-      font-size: 12px;
-      line-height: 1.5;
-      margin-bottom: 4px;
-      text-decoration: none;
-    }
-    .article-link:hover { text-decoration: underline; }
-    .no-article {
-      font-size: 12px;
-      font-style: italic;
-      line-height: 1.5;
-    }
+    .card-divider { border: none; border-top: 0.5px solid; margin: 4px 0 20px; }
 
-    /* Amber — PEM */
-    .c-amber { background: #FAEEDA; border-color: #EF9F27; }
-    .c-amber .cluster-tag  { color: #633806; }
-    .c-amber .cluster-name { color: #412402; }
-    .c-amber .cluster-desc { color: #854F0B; }
-    .c-amber .do-col   { background: rgba(255,255,255,0.55); }
-    .c-amber .avoid-col { background: rgba(186,117,23,0.1); }
-    .c-amber ul li { color: #633806; }
-    .c-amber .article-links { border-color: #EF9F27; }
-    .c-amber .links-label { color: #412402; }
-    .c-amber .article-link { color: #854F0B; }
+    .articles-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .articles-head-icon { font-size: 16px; }
+    .articles-head-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; }
 
-    /* Purple — Cognitive */
-    .c-purple { background: #EEEDFE; border-color: #AFA9EC; }
-    .c-purple .cluster-tag  { color: #3C3489; }
-    .c-purple .cluster-name { color: #26215C; }
-    .c-purple .cluster-desc { color: #534AB7; }
-    .c-purple .do-col   { background: rgba(255,255,255,0.55); }
-    .c-purple .avoid-col { background: rgba(127,119,221,0.1); }
-    .c-purple ul li { color: #3C3489; }
-    .c-purple .article-links { border-color: #AFA9EC; }
-    .c-purple .links-label { color: #26215C; }
-    .c-purple .article-link { color: #534AB7; }
+    .article-card { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border: 0.5px solid; border-radius: 8px; margin-bottom: 8px; text-decoration: none; transition: background 0.12s; background: rgba(255,255,255,0.55); }
+    .article-card:hover { background: rgba(255,255,255,0.9); }
+    .ac-icon { font-size: 16px; flex-shrink: 0; }
+    .ac-text { font-size: 13px; line-height: 1.4; flex: 1; }
+    .ac-arrow { font-size: 14px; flex-shrink: 0; }
+    .no-article { font-size: 13px; font-style: italic; line-height: 1.6; }
 
-    /* Teal — Autonomic */
-    .c-teal { background: #E1F5EE; border-color: #5DCAA5; }
-    .c-teal .cluster-tag  { color: #085041; }
-    .c-teal .cluster-name { color: #04342C; }
-    .c-teal .cluster-desc { color: #0F6E56; }
-    .c-teal .do-col   { background: rgba(255,255,255,0.55); }
-    .c-teal .avoid-col { background: rgba(29,158,117,0.1); }
-    .c-teal ul li { color: #085041; }
-    .c-teal .article-links { border-color: #5DCAA5; }
-    .c-teal .links-label { color: #04342C; }
-    .c-teal .article-link { color: #0F6E56; }
-
-    /* Blue — Respiratory */
-    .c-blue { background: #E6F1FB; border-color: #85B7EB; }
-    .c-blue .cluster-tag  { color: #0C447C; }
-    .c-blue .cluster-name { color: #042C53; }
-    .c-blue .cluster-desc { color: #185FA5; }
-    .c-blue .do-col   { background: rgba(255,255,255,0.55); }
-    .c-blue .avoid-col { background: rgba(55,138,221,0.1); }
-    .c-blue ul li { color: #0C447C; }
-    .c-blue .article-links { border-color: #85B7EB; }
-    .c-blue .links-label { color: #042C53; }
-    .c-blue .article-link { color: #185FA5; }
-    .c-blue .no-article { color: #185FA5; }
-
-    /* Coral — Sensory */
-    .c-coral { background: #FAECE7; border-color: #F0997B; }
-    .c-coral .cluster-tag  { color: #712B13; }
-    .c-coral .cluster-name { color: #4A1B0C; }
-    .c-coral .cluster-desc { color: #993C1D; }
-    .c-coral .do-col   { background: rgba(255,255,255,0.55); }
-    .c-coral .avoid-col { background: rgba(216,90,48,0.1); }
-    .c-coral ul li { color: #712B13; }
-    .c-coral .article-links { border-color: #F0997B; }
-    .c-coral .links-label { color: #4A1B0C; }
-    .c-coral .article-link { color: #993C1D; }
-    .c-coral .no-article { color: #993C1D; }
-
-    /* Green — GI */
-    .c-green { background: #EAF3DE; border-color: #97C459; }
-    .c-green .cluster-tag  { color: #27500A; }
-    .c-green .cluster-name { color: #173404; }
-    .c-green .cluster-desc { color: #3B6D11; }
-    .c-green .do-col   { background: rgba(255,255,255,0.55); }
-    .c-green .avoid-col { background: rgba(99,153,34,0.1); }
-    .c-green ul li { color: #27500A; }
-    .c-green .article-links { border-color: #97C459; }
-    .c-green .links-label { color: #173404; }
-    .c-green .article-link { color: #3B6D11; }
-
-    #outcome {
-      width: 100%;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .reset-btn {
-      margin-top: 14px;
-      font-size: 13px;
-      font-family: inherit;
-      color: #5f5e5a;
-      background: none;
-      border: 0.5px solid #d3d1c7;
-      border-radius: 8px;
-      padding: 8px 16px;
-      cursor: pointer;
-      display: none;
-    }
+    .reset-btn { margin-top: 16px; font-size: 13px; font-family: inherit; color: #5f5e5a; background: none; border: 0.5px solid #d3d1c7; border-radius: 8px; padding: 8px 16px; cursor: pointer; display: none; }
     .reset-btn:hover { background: #f1efe8; }
     .reset-btn.visible { display: block; }
 
-    .page-footer {
-      max-width: 600px;
-      margin: 3rem auto 0;
-      padding-top: 1.5rem;
-      border-top: 0.5px solid #d3d1c7;
-      font-size: 12px;
-      color: #888780;
-      line-height: 1.6;
-    }
+    .page-footer { max-width: 600px; margin: 3rem auto 0; padding-top: 1.5rem; border-top: 0.5px solid #d3d1c7; font-size: 12px; color: #888780; line-height: 1.6; }
     .page-footer a { color: #534AB7; text-decoration: none; }
     .page-footer a:hover { text-decoration: underline; }
+
+    /* COLOR THEMES */
+    .c-amber { background:#FAEEDA; border-color:#EF9F27; }
+    .c-amber .cluster-dot { background:#BA7517; }
+    .c-amber .cluster-eyebrow-label { color:#633806; }
+    .c-amber .cluster-headline { color:#412402; }
+    .c-amber .cluster-desc { color:#633806; border-color:#EF9F27; }
+    .c-amber .card-divider { border-color:#EF9F27; }
+    .c-amber .articles-head-icon,.c-amber .articles-head-label { color:#633806; }
+    .c-amber .article-card { border-color:#EF9F27; }
+    .c-amber .ac-icon { color:#854F0B; }
+    .c-amber .ac-text { color:#412402; }
+    .c-amber .ac-arrow { color:#BA7517; }
+    .c-amber .no-article { color:#854F0B; }
+
+    .c-orange { background:#FDF0E8; border-color:#E07A30; }
+    .c-orange .cluster-dot { background:#C05A18; }
+    .c-orange .cluster-eyebrow-label { color:#7A3510; }
+    .c-orange .cluster-headline { color:#4A1F08; }
+    .c-orange .cluster-desc { color:#7A3510; border-color:#E07A30; }
+    .c-orange .card-divider { border-color:#E07A30; }
+    .c-orange .articles-head-icon,.c-orange .articles-head-label { color:#7A3510; }
+    .c-orange .article-card { border-color:#E07A30; }
+    .c-orange .ac-icon { color:#A04820; }
+    .c-orange .ac-text { color:#4A1F08; }
+    .c-orange .ac-arrow { color:#C05A18; }
+    .c-orange .no-article { color:#A04820; }
+
+    .c-purple { background:#EEEDFE; border-color:#AFA9EC; }
+    .c-purple .cluster-dot { background:#534AB7; }
+    .c-purple .cluster-eyebrow-label { color:#3C3489; }
+    .c-purple .cluster-headline { color:#26215C; }
+    .c-purple .cluster-desc { color:#3C3489; border-color:#AFA9EC; }
+    .c-purple .card-divider { border-color:#AFA9EC; }
+    .c-purple .articles-head-icon,.c-purple .articles-head-label { color:#3C3489; }
+    .c-purple .article-card { border-color:#AFA9EC; }
+    .c-purple .ac-icon { color:#534AB7; }
+    .c-purple .ac-text { color:#26215C; }
+    .c-purple .ac-arrow { color:#7F77DD; }
+    .c-purple .no-article { color:#534AB7; }
+
+    .c-slate { background:#EEF2F7; border-color:#8BAAC8; }
+    .c-slate .cluster-dot { background:#4A7BA8; }
+    .c-slate .cluster-eyebrow-label { color:#2D567A; }
+    .c-slate .cluster-headline { color:#1A3650; }
+    .c-slate .cluster-desc { color:#2D567A; border-color:#8BAAC8; }
+    .c-slate .card-divider { border-color:#8BAAC8; }
+    .c-slate .articles-head-icon,.c-slate .articles-head-label { color:#2D567A; }
+    .c-slate .article-card { border-color:#8BAAC8; }
+    .c-slate .ac-icon { color:#4A7BA8; }
+    .c-slate .ac-text { color:#1A3650; }
+    .c-slate .ac-arrow { color:#4A7BA8; }
+    .c-slate .no-article { color:#4A7BA8; }
+
+    .c-teal { background:#E1F5EE; border-color:#5DCAA5; }
+    .c-teal .cluster-dot { background:#1D9E75; }
+    .c-teal .cluster-eyebrow-label { color:#085041; }
+    .c-teal .cluster-headline { color:#04342C; }
+    .c-teal .cluster-desc { color:#085041; border-color:#5DCAA5; }
+    .c-teal .card-divider { border-color:#5DCAA5; }
+    .c-teal .articles-head-icon,.c-teal .articles-head-label { color:#085041; }
+    .c-teal .article-card { border-color:#5DCAA5; }
+    .c-teal .ac-icon { color:#0F6E56; }
+    .c-teal .ac-text { color:#04342C; }
+    .c-teal .ac-arrow { color:#1D9E75; }
+    .c-teal .no-article { color:#0F6E56; }
+
+    .c-blue { background:#E6F1FB; border-color:#85B7EB; }
+    .c-blue .cluster-dot { background:#378ADD; }
+    .c-blue .cluster-eyebrow-label { color:#0C447C; }
+    .c-blue .cluster-headline { color:#042C53; }
+    .c-blue .cluster-desc { color:#0C447C; border-color:#85B7EB; }
+    .c-blue .card-divider { border-color:#85B7EB; }
+    .c-blue .articles-head-icon,.c-blue .articles-head-label { color:#0C447C; }
+    .c-blue .article-card { border-color:#85B7EB; }
+    .c-blue .ac-icon { color:#185FA5; }
+    .c-blue .ac-text { color:#042C53; }
+    .c-blue .ac-arrow { color:#378ADD; }
+    .c-blue .no-article { color:#185FA5; }
+
+    .c-coral { background:#FAECE7; border-color:#F0997B; }
+    .c-coral .cluster-dot { background:#D85A30; }
+    .c-coral .cluster-eyebrow-label { color:#712B13; }
+    .c-coral .cluster-headline { color:#4A1B0C; }
+    .c-coral .cluster-desc { color:#712B13; border-color:#F0997B; }
+    .c-coral .card-divider { border-color:#F0997B; }
+    .c-coral .articles-head-icon,.c-coral .articles-head-label { color:#712B13; }
+    .c-coral .article-card { border-color:#F0997B; }
+    .c-coral .ac-icon { color:#993C1D; }
+    .c-coral .ac-text { color:#4A1B0C; }
+    .c-coral .ac-arrow { color:#D85A30; }
+    .c-coral .no-article { color:#993C1D; }
+
+    .c-green { background:#EAF3DE; border-color:#97C459; }
+    .c-green .cluster-dot { background:#639922; }
+    .c-green .cluster-eyebrow-label { color:#27500A; }
+    .c-green .cluster-headline { color:#173404; }
+    .c-green .cluster-desc { color:#27500A; border-color:#97C459; }
+    .c-green .card-divider { border-color:#97C459; }
+    .c-green .articles-head-icon,.c-green .articles-head-label { color:#27500A; }
+    .c-green .article-card { border-color:#97C459; }
+    .c-green .ac-icon { color:#3B6D11; }
+    .c-green .ac-text { color:#173404; }
+    .c-green .ac-arrow { color:#639922; }
+    .c-green .no-article { color:#3B6D11; }
   </style>
 </head>
 <body>
 
-  <div class="page-header">
-    <div class="site-label">Life Beyond Long COVID</div>
-    <h1>What is your body actually telling you?</h1>
-    <p>Answer two or three questions about your most persistent symptom. This tool maps it to one of the five research-defined Long COVID clusters — and tells you what to do and avoid based on what that system needs.</p>
-    <a class="substack-link" href="https://www.lifebeyondlongcovid.com" target="_blank">← Back to lifebeyondlongcovid.com</a>
-  </div>
+<div class="page-header">
+  <div class="site-label">Life Beyond Long COVID</div>
+  <h1>What is your body actually telling you?</h1>
+  <p>Answer two or three questions about your most persistent symptom. This tool maps it to one of the research-defined Long COVID clusters — and tells you what to do and avoid based on what that system needs.</p>
+  <a class="substack-link" href="https://longcovidkari.substack.com" target="_blank">← Back to Life Beyond Long COVID</a>
+</div>
 
-  <div class="chart-wrap">
-    <p class="chart-title">Long COVID symptom pathway — RECOVER research clusters</p>
-    <div class="node-grid" id="flow">
+<div class="chart-wrap">
+  <p class="chart-title">Long COVID symptom pathway — RECOVER research clusters</p>
+  <div class="node-grid" id="flow">
 
-      <div class="entry-box">
-        <div class="label">Start here</div>
-        <div class="title">What's bothering you most right now?</div>
+    <div class="entry-box">
+      <div class="label">Start here</div>
+      <div class="title">What's bothering you most right now?</div>
+    </div>
+    <div class="connector"><div class="connector-line"></div></div>
+
+    <!-- STEP 1 -->
+    <div class="step active" id="step1">
+      <div class="branch-row four">
+        <button class="answer-btn" onclick="choose('energy','Fatigue or energy crashes')"><span class="answer-icon">⚡</span>Fatigue or energy crashes</button>
+        <button class="answer-btn" onclick="choose('brain','Brain fog or memory trouble')"><span class="answer-icon">🌫</span>Brain fog or memory trouble</button>
+        <button class="answer-btn" onclick="choose('heart','Heart racing or breathlessness')"><span class="answer-icon">💓</span>Heart racing or breathlessness</button>
+        <button class="answer-btn" onclick="choose('smell','Smell, taste, or gut issues')"><span class="answer-icon">👃</span>Smell, taste, or gut issues</button>
       </div>
+    </div>
+
+    <!-- ENERGY BRANCH -->
+    <div class="step" id="step-energy">
       <div class="connector"><div class="connector-line"></div></div>
+      <div class="breadcrumb" id="bc-energy"><div class="breadcrumb-inner"><span class="breadcrumb-label">Your path:</span><span class="crumb">Fatigue or energy crashes</span></div></div>
+      <div class="question-box"><div class="q-label">Follow-up</div><div class="q-text">Does even light activity make it dramatically worse — and the crash hits hours or days later?</div></div>
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="branch-row two">
+        <button class="answer-btn" onclick="showCluster('pem')">Yes — I crash afterward, sometimes for days</button>
+        <button class="answer-btn" onclick="choose('energy2','Constant drain, no clear crash')">More like a constant drain — no clear crash</button>
+      </div>
+      <button class="back-btn" onclick="goBack('step1')">← Back</button>
+    </div>
 
-      <!-- Step 1: Primary symptom -->
-      <div class="step active" id="step1">
-        <div class="branch-row four">
-          <button class="answer-btn" onclick="choose('energy')">
-            <span class="answer-icon">⚡</span>Fatigue or energy crashes
-          </button>
-          <button class="answer-btn" onclick="choose('brain')">
-            <span class="answer-icon">🌫</span>Brain fog or memory trouble
-          </button>
-          <button class="answer-btn" onclick="choose('heart')">
-            <span class="answer-icon">💓</span>Heart racing or breathlessness
-          </button>
-          <button class="answer-btn" onclick="choose('smell')">
-            <span class="answer-icon">👃</span>Smell, taste, or gut issues
-          </button>
-        </div>
+    <div class="step" id="step-energy2">
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="breadcrumb" id="bc-energy2"><div class="breadcrumb-inner"><span class="breadcrumb-label">Your path:</span><span class="crumb">Fatigue or energy crashes</span><span class="crumb-sep">›</span><span class="crumb">Constant drain, no clear crash</span></div></div>
+      <div class="question-box"><div class="q-label">Follow-up</div><div class="q-text">Does food feel like it doesn't "land" — you eat and nothing changes, or you feel worse afterward?</div></div>
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="branch-row two">
+        <button class="answer-btn" onclick="showCluster('gi')">Yes — food isn't giving me energy</button>
+        <button class="answer-btn" onclick="showCluster('pem')">No — I just run out of fuel by midday</button>
+      </div>
+      <button class="back-btn" onclick="goBack('step-energy')">← Back</button>
+    </div>
+
+    <!-- BRAIN BRANCH -->
+    <div class="step" id="step-brain">
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="breadcrumb" id="bc-brain"><div class="breadcrumb-inner"><span class="breadcrumb-label">Your path:</span><span class="crumb">Brain fog or memory trouble</span></div></div>
+      <div class="question-box"><div class="q-label">Follow-up</div><div class="q-text">Have you also lost interest in things you used to enjoy, or feel emotionally flat?</div></div>
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="branch-row two">
+        <button class="answer-btn" onclick="showCluster('cognitive')">Yes — flat and unmotivated, not just tired</button>
+        <button class="answer-btn" onclick="choose('brain2','Mostly slow thinking and memory gaps')">No — mostly slow thinking and memory gaps</button>
+      </div>
+      <button class="back-btn" onclick="goBack('step1')">← Back</button>
+    </div>
+
+    <div class="step" id="step-brain2">
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="breadcrumb" id="bc-brain2"><div class="breadcrumb-inner"><span class="breadcrumb-label">Your path:</span><span class="crumb">Brain fog or memory trouble</span><span class="crumb-sep">›</span><span class="crumb">Mostly slow thinking and memory gaps</span></div></div>
+      <div class="question-box"><div class="q-label">Follow-up</div><div class="q-text">Do you also feel dizzy or lightheaded — especially when you stand up or change position?</div></div>
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="branch-row two">
+        <button class="answer-btn" onclick="showCluster('perfusion')">Yes — dizziness is part of it</button>
+        <button class="answer-btn" onclick="showCluster('cognitive')">No — mostly just the cognitive slowing</button>
+      </div>
+      <button class="back-btn" onclick="goBack('step-brain')">← Back</button>
+    </div>
+
+    <!-- HEART BRANCH -->
+    <div class="step" id="step-heart">
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="breadcrumb" id="bc-heart"><div class="breadcrumb-inner"><span class="breadcrumb-label">Your path:</span><span class="crumb">Heart racing or breathlessness</span></div></div>
+      <div class="question-box"><div class="q-label">Follow-up</div><div class="q-text">Does your heart race or flutter even when you're sitting still or resting?</div></div>
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="branch-row two">
+        <button class="answer-btn" onclick="showCluster('autonomic')">Yes — at rest too, not just with activity</button>
+        <button class="answer-btn" onclick="choose('heart2','More with movement, breathlessness is main')">More with movement — breathlessness is the main issue</button>
+      </div>
+      <button class="back-btn" onclick="goBack('step1')">← Back</button>
+    </div>
+
+    <div class="step" id="step-heart2">
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="breadcrumb" id="bc-heart2"><div class="breadcrumb-inner"><span class="breadcrumb-label">Your path:</span><span class="crumb">Heart racing or breathlessness</span><span class="crumb-sep">›</span><span class="crumb">More with movement, breathlessness is main</span></div></div>
+      <div class="question-box"><div class="q-label">Follow-up</div><div class="q-text">Do you also have a persistent cough that won't fully resolve?</div></div>
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="branch-row two">
+        <button class="answer-btn" onclick="showCluster('respiratory')">Yes — the cough has been ongoing</button>
+        <button class="answer-btn" onclick="showCluster('pem-breath')">No — breathlessness without cough</button>
+      </div>
+      <button class="back-btn" onclick="goBack('step-heart')">← Back</button>
+    </div>
+
+    <!-- SMELL / GI BRANCH -->
+    <div class="step" id="step-smell">
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="breadcrumb" id="bc-smell"><div class="breadcrumb-inner"><span class="breadcrumb-label">Your path:</span><span class="crumb">Smell, taste, or gut issues</span></div></div>
+      <div class="question-box"><div class="q-label">Follow-up</div><div class="q-text">Which is the bigger issue for you?</div></div>
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="branch-row two">
+        <button class="answer-btn" onclick="showCluster('sensory')">Smell or taste — absent, wrong, or distorted</button>
+        <button class="answer-btn" onclick="showCluster('gi')">Gut — nausea, bloating, food reactions</button>
+      </div>
+      <button class="back-btn" onclick="goBack('step1')">← Back</button>
+    </div>
+
+    <!-- OUTCOMES -->
+    <div id="outcome">
+      <div class="connector"><div class="connector-line"></div></div>
+      <div class="breadcrumb visible" id="bc-outcome" style="width:100%;"><div class="breadcrumb-inner" id="bc-outcome-inner"></div></div>
+
+      <!-- PEM CRASH -->
+      <div id="cluster-pem" class="cluster-card c-amber">
+        <div class="cluster-eyebrow"><div class="cluster-dot"></div><span class="cluster-eyebrow-label">RECOVER cluster — post-exertional</span></div>
+        <h2 class="cluster-headline">Your system is managing energy debt</h2>
+        <p class="cluster-desc">Post-exertional malaise points to mitochondrial failure — your cellular power plants are damaged and can't recharge fast enough after use. When you push past your threshold, your body cannibalizes partially-charged reserves to keep going, and those destroyed pieces take 2–3 days to rebuild. That's why the crash is delayed, why rest alone doesn't fix it, and why you can feel fine in the moment and be flattened the next day.</p>
+        <div class="section-head"><div class="section-icon do-icon" aria-hidden="true"><i class="ti ti-check"></i></div><span class="section-label do-label">Do</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item do-item"><i class="ti ti-chart-line g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Track activity against next-day symptoms for two weeks</span>You're looking for your specific threshold, not a generic one. Most people discover it's lower — and more consistent — than they expect.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-clock-pause g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Rest before you hit the wall, not after</span>By the time the crash arrives, the damage is already done. Preemptive rest is not giving up — it's protecting your repair window.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-coffee g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Eat breakfast before coffee</span>Your cortisol dispatcher needs accurate fuel information first thing. Caffeine before food sends the wrong signal and distorts your energy read for the rest of the day.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-brain g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Count cognitive and emotional exertion</span>Difficult conversations, decisions, and emotional stress all draw from the same depleted pool as physical activity. They count toward your threshold.</span></li>
+        </ul>
+        <div class="section-head"><div class="section-icon avoid-icon" aria-hidden="true"><i class="ti ti-x"></i></div><span class="section-label avoid-label">Avoid</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item avoid-item"><i class="ti ti-trending-up g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Pushing through on good days</span>A good day means the machinery is temporarily compensating, not that it's repaired. Good days are for staying within your threshold, not testing its upper limit.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-ban g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Fasting or skipping meals</span>Your mitochondria need consistent raw material. Fasting protocols designed for healthy metabolisms can actively worsen PEM.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-run g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">High-intensity exercise</span>Until your threshold measurably expands over weeks — not days — high exertion causes more damage than it repairs.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-circle-x g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Interpreting a crash as failure</span>It's data about where your current ceiling is — not evidence that you did something wrong or that recovery isn't happening.</span></li>
+        </ul>
+        <hr class="card-divider">
+        <div class="articles-head"><i class="ti ti-books articles-head-icon" aria-hidden="true"></i><span class="articles-head-label">Go deeper</span></div>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/why-your-food-isnt-translating-into?r=74xuvu" target="_blank"><i class="ti ti-bolt ac-icon" aria-hidden="true"></i><span class="ac-text">Why Long COVID Crashes Hit Without Warning — and Don't Respond to Rest</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/your-blood-sugar-is-fine-so-why-do?r=74xuvu" target="_blank"><i class="ti ti-clock ac-icon" aria-hidden="true"></i><span class="ac-text">Why Long COVID Leaves You Running on Fumes by 2pm</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/the-fuel-series-when-the-energy-door?r=74xuvu" target="_blank"><i class="ti ti-door ac-icon" aria-hidden="true"></i><span class="ac-text">How Long COVID Leaves Your Cells Starving Even When You're Eating Well</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/youre-not-broken-youre-overloaded?r=74xuvu" target="_blank"><i class="ti ti-shield ac-icon" aria-hidden="true"></i><span class="ac-text">Everything changes when you can see your Long COVID fatigue as protection rather than failure</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
       </div>
 
-      <!-- Energy branch -->
-      <div class="step" id="step-energy">
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="question-box">
-          <div class="q-label">Follow-up</div>
-          <div class="q-text">Does even light activity make it dramatically worse — and the crash hits hours or days later?</div>
-        </div>
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="branch-row two">
-          <button class="answer-btn" onclick="showCluster('pem')">Yes — I crash afterward, sometimes for days</button>
-          <button class="answer-btn" onclick="choose('energy2')">More like a constant drain — no clear crash</button>
-        </div>
+      <!-- PEM BREATHLESSNESS -->
+      <div id="cluster-pem-breath" class="cluster-card c-orange">
+        <div class="cluster-eyebrow"><div class="cluster-dot"></div><span class="cluster-eyebrow-label">RECOVER cluster — post-exertional / cardiovascular</span></div>
+        <h2 class="cluster-headline">Your heart and lungs are working harder than they should</h2>
+        <p class="cluster-desc">Breathlessness with exertion in Long COVID often reflects a cardiovascular system that lost its efficiency during illness and hasn't recalibrated. Blood volume can drop, the heart rate response to activity overshoots, and oxygen delivery to muscles becomes unreliable — so even mild movement feels like hard work. Your body isn't deconditioned. It's dysregulated. The cardiovascular system is reacting as if any demand is a crisis.</p>
+        <div class="section-head"><div class="section-icon do-icon" aria-hidden="true"><i class="ti ti-check"></i></div><span class="section-label do-label">Do</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item do-item"><i class="ti ti-droplet g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Increase fluid and salt intake</span>Low blood volume is a common and addressable driver of exertional breathlessness in Long COVID. This is one of the most direct interventions available.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-swim g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Start with horizontal or recumbent movement</span>Swimming or recumbent cycling before progressing to upright exertion keeps demand manageable while cardiovascular tone rebuilds.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-heart-rate-monitor g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Track heart rate during activities</span>Find the effort level where breathlessness begins — that's your working ceiling right now, not your endpoint. Knowing it prevents repeated overshoots.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-rotate g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Allow full heart rate recovery between exertions</span>If your resting heart rate hasn't returned to baseline, you haven't recovered yet. This is a measurable signal, not a feeling.</span></li>
+        </ul>
+        <div class="section-head"><div class="section-icon avoid-icon" aria-hidden="true"><i class="ti ti-x"></i></div><span class="section-label avoid-label">Avoid</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item avoid-item"><i class="ti ti-trending-up g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">The push-through approach</span>The deconditioning logic — that you just need to build tolerance — doesn't apply here and can worsen dysregulation. This is a regulatory problem, not a fitness problem.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-temperature-sun g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Hot environments for exercise</span>Heat dilates blood vessels, further dropping blood pressure and worsening breathlessness. Cool environments are significantly better tolerated.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-clock g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Standing still for long periods</span>Gentle walking is usually better tolerated than stationary standing, which pools blood in the legs and increases cardiovascular demand.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-coffee g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Caffeine and diuretics before activity</span>Both reduce blood volume at exactly the moment your cardiovascular system needs the most support.</span></li>
+        </ul>
+        <hr class="card-divider">
+        <div class="articles-head"><i class="ti ti-books articles-head-icon" aria-hidden="true"></i><span class="articles-head-label">Go deeper</span></div>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/the-nervous-system-breaking-pointand?r=74xuvu" target="_blank"><i class="ti ti-activity ac-icon" aria-hidden="true"></i><span class="ac-text">The Nervous System Breaking Point — and How to Find Your Way Back</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/why-your-body-still-thinks-its-sick?r=74xuvu" target="_blank"><i class="ti ti-shield ac-icon" aria-hidden="true"></i><span class="ac-text">Your Body Got Really Good at Being Sick — the normalization nobody talks about</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/youre-not-broken-youre-overloaded?r=74xuvu" target="_blank"><i class="ti ti-heart ac-icon" aria-hidden="true"></i><span class="ac-text">Everything changes when you can see your Long COVID fatigue as protection rather than failure</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
       </div>
 
-      <div class="step" id="step-energy2">
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="question-box">
-          <div class="q-label">Follow-up</div>
-          <div class="q-text">Does food feel like it doesn't "land" — you eat and nothing changes, or you feel worse afterward?</div>
-        </div>
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="branch-row two">
-          <button class="answer-btn" onclick="showCluster('gi')">Yes — food isn't giving me energy</button>
-          <button class="answer-btn" onclick="showCluster('pem')">No — I just run out of fuel by midday</button>
-        </div>
+      <!-- COGNITIVE / DOPAMINE -->
+      <div id="cluster-cognitive" class="cluster-card c-purple">
+        <div class="cluster-eyebrow"><div class="cluster-dot"></div><span class="cluster-eyebrow-label">RECOVER cluster — cognitive / dopamine</span></div>
+        <h2 class="cluster-headline">Your brain's reward and retrieval system is depleted</h2>
+        <p class="cluster-desc">When brain fog comes paired with emotional flatness and lost motivation, it's pointing at dopamine suppression specifically — not general fatigue. Dopamine runs the brain's retrieval system (finding words, holding a thought), its motivation circuits (the felt sense that something is worth doing), and the architecture of REM sleep where those circuits restore overnight. When dopamine neurons are damaged by Long COVID, all three go offline together. It's not depression. It's a signaling system running on low fuel.</p>
+        <div class="section-head"><div class="section-icon do-icon" aria-hidden="true"><i class="ti ti-check"></i></div><span class="section-label do-label">Do</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item do-item"><i class="ti ti-moon g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Protect REM sleep above almost everything else</span>It's when dopamine pathways restore. Without it, nothing else you do for cognition will hold. Sleep is the intervention here, not a side issue.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-sparkles g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Use novelty strategically</span>Small new experiences — a different route, a new podcast, an unfamiliar task — generate dopamine without the cost of high effort or decision fatigue.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-list-check g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Reduce decision load wherever possible</span>Every small decision draws from the same depleted dopamine pool. Simplify choices, use routines, and protect the decisions that actually matter.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-sun g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Morning light within 30 minutes of waking</span>Anchors the dopamine-cortisol rhythm that sets the tone for the whole day. One of the lowest-cost, highest-leverage interventions available.</span></li>
+        </ul>
+        <div class="section-head"><div class="section-icon avoid-icon" aria-hidden="true"><i class="ti ti-x"></i></div><span class="section-label avoid-label">Avoid</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item avoid-item"><i class="ti ti-layout-columns g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Multitasking and constant context-switching</span>It feels productive but costs more than it returns when dopamine is low. Single-task work is both more effective and less depleting right now.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-device-mobile g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">High-stimulation dopamine hits</span>Doom-scrolling and sugar spikes borrow against an account that's already overdrawn. They feel like relief and accelerate the deficit.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-moon-off g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Late-night screens</span>Blue light suppresses the melatonin-dopamine handoff that initiates restorative sleep — the exact window your brain needs most.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-heart-broken g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Framing flatness as a character issue</span>You're not unmotivated. Your motivational circuitry is running on fumes. The distinction matters for how you approach recovery.</span></li>
+        </ul>
+        <hr class="card-divider">
+        <div class="articles-head"><i class="ti ti-books articles-head-icon" aria-hidden="true"></i><span class="articles-head-label">Go deeper</span></div>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/how-long-covid-suppresses-dopamine?r=74xuvu" target="_blank"><i class="ti ti-brain ac-icon" aria-hidden="true"></i><span class="ac-text">How Long COVID Suppresses Dopamine Production</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/dopamine-sleep?r=74xuvu" target="_blank"><i class="ti ti-moon ac-icon" aria-hidden="true"></i><span class="ac-text">REM Sleep, Brain Fog, and the Molecule Long COVID is Depriving You Of</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/the-dopamine-protocol-a-field-report?r=74xuvu" target="_blank"><i class="ti ti-flask ac-icon" aria-hidden="true"></i><span class="ac-text">The Dopamine Protocol: A Field Report</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/long-covid-didnt-just-take-our-joy?r=74xuvu" target="_blank"><i class="ti ti-mood-sad ac-icon" aria-hidden="true"></i><span class="ac-text">Long COVID Didn't Just Take Our Joy. It Left Our Anger Intact.</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
       </div>
 
-      <!-- Brain branch -->
-      <div class="step" id="step-brain">
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="question-box">
-          <div class="q-label">Follow-up</div>
-          <div class="q-text">Have you also lost interest in things you used to enjoy, or feel emotionally flat?</div>
-        </div>
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="branch-row two">
-          <button class="answer-btn" onclick="showCluster('cognitive')">Yes — flat and unmotivated, not just tired</button>
-          <button class="answer-btn" onclick="choose('brain2')">No — mostly slow thinking and memory gaps</button>
-        </div>
+      <!-- AUTONOMIC / PERFUSION -->
+      <div id="cluster-perfusion" class="cluster-card c-slate">
+        <div class="cluster-eyebrow"><div class="cluster-dot"></div><span class="cluster-eyebrow-label">RECOVER cluster — autonomic / cognitive</span></div>
+        <h2 class="cluster-headline">Your brain is running on unreliable blood flow</h2>
+        <p class="cluster-desc">When cognitive slowing comes with dizziness, the issue often isn't purely neurological — it's circulatory. The autonomic nervous system controls blood pressure and vessel tone moment-to-moment. When it's dysregulated, blood doesn't redistribute fast enough when you change position or increase demand. The brain gets less than it needs, and thinking slows the same way a computer slows when it's thermal-throttling. The fog isn't in your neurons. It's in the pipeline that feeds them.</p>
+        <div class="section-head"><div class="section-icon do-icon" aria-hidden="true"><i class="ti ti-check"></i></div><span class="section-label do-label">Do</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item do-item"><i class="ti ti-arrow-up g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Rise from sitting or lying positions slowly, in stages</span>Give your vessels time to adjust before your full weight is upright. Sitting on the edge of the bed for 30 seconds before standing is a genuine intervention.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-droplet g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Increase fluid and salt intake</span>Blood volume is often low in autonomic dysfunction — and brain perfusion depends directly on it. This is frequently under-addressed.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-clock g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Keep a consistent sleep-wake schedule</span>Circadian rhythm is one of the main regulators of autonomic tone. Irregular schedules compound dysregulation significantly.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-stethoscope g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Note whether symptoms worsen after position changes or meals</span>This pattern points clearly at autonomic involvement and is useful, specific information for your provider.</span></li>
+        </ul>
+        <div class="section-head"><div class="section-icon avoid-icon" aria-hidden="true"><i class="ti ti-x"></i></div><span class="section-label avoid-label">Avoid</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item avoid-item"><i class="ti ti-soup g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Large meals</span>They redirect blood to digestion and away from the brain, worsening both dizziness and fog — often for 1–2 hours afterward. Smaller, more frequent meals smooth this significantly.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-bath g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Hot showers or baths</span>Vasodilation drops blood pressure further and is one of the most reliable triggers for dizziness and worsened cognition in this cluster.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-man g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Standing still for extended periods</span>Gentle movement — even slow walking in place — maintains circulation better than stationary standing, which pools blood in the lower body.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-coffee g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Pushing through brain fog with caffeine</span>Caffeine temporarily raises heart rate without solving the underlying perfusion issue — and as a diuretic, it can reduce the blood volume that's already insufficient.</span></li>
+        </ul>
+        <hr class="card-divider">
+        <div class="articles-head"><i class="ti ti-books articles-head-icon" aria-hidden="true"></i><span class="articles-head-label">Go deeper</span></div>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/the-nervous-system-breaking-pointand?r=74xuvu" target="_blank"><i class="ti ti-activity ac-icon" aria-hidden="true"></i><span class="ac-text">The Nervous System Breaking Point — and How to Find Your Way Back</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/why-your-body-still-thinks-its-sick?r=74xuvu" target="_blank"><i class="ti ti-shield ac-icon" aria-hidden="true"></i><span class="ac-text">Your Body Got Really Good at Being Sick — the normalization nobody talks about</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/your-blood-sugar-is-fine-so-why-do?r=74xuvu" target="_blank"><i class="ti ti-clock ac-icon" aria-hidden="true"></i><span class="ac-text">Why Long COVID Leaves You Running on Fumes by 2pm</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
       </div>
 
-      <div class="step" id="step-brain2">
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="question-box">
-          <div class="q-label">Follow-up</div>
-          <div class="q-text">Do you also feel dizzy or lightheaded — especially when you stand up or change position?</div>
-        </div>
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="branch-row two">
-          <button class="answer-btn" onclick="showCluster('autonomic')">Yes — dizziness is part of it</button>
-          <button class="answer-btn" onclick="showCluster('cognitive')">No — mostly just the cognitive slowing</button>
-        </div>
+      <!-- AUTONOMIC / CARDIAC -->
+      <div id="cluster-autonomic" class="cluster-card c-teal">
+        <div class="cluster-eyebrow"><div class="cluster-dot"></div><span class="cluster-eyebrow-label">RECOVER cluster — autonomic / cardiac</span></div>
+        <h2 class="cluster-headline">Your nervous system's pace-setter is stuck in overdrive</h2>
+        <p class="cluster-desc">Palpitations and racing heart at rest point to autonomic dysregulation — specifically, an imbalance between the sympathetic (accelerator) and parasympathetic (brake) branches of your nervous system. The vagus nerve — the main parasympathetic pathway — is often damaged or dysregulated in Long COVID, leaving the sympathetic system running without adequate counterweight. Your heart isn't diseased. It's responding to a nervous system that won't stand down from high alert. This is the same pattern that drives poor sleep, persistent anxiety, and the sense of bracing for something even on a calm day.</p>
+        <div class="section-head"><div class="section-icon do-icon" aria-hidden="true"><i class="ti ti-check"></i></div><span class="section-label do-label">Do</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item do-item"><i class="ti ti-wind g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Extended exhale breathing daily</span>Inhale 4 counts, exhale 6–8. This directly activates the vagus nerve and puts a manual brake on the sympathetic response. It's not relaxation theater — it's direct nervous system intervention.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-droplet g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Increase salt and fluid intake</span>Low blood volume forces the heart to compensate with rate. Addressing volume is often the most direct route to reducing resting palpitations.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-chart-line g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Track heart rate variability (HRV) if possible</span>HRV is a direct measure of autonomic balance and shows progress before symptoms shift. It gives you objective data when subjective experience feels inconsistent.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-moon g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Prioritize sleep schedule consistency over duration</span>Irregular sleep times worsen autonomic dysregulation significantly. When you sleep and wake matters as much as how long.</span></li>
+        </ul>
+        <div class="section-head"><div class="section-icon avoid-icon" aria-hidden="true"><i class="ti ti-x"></i></div><span class="section-label avoid-label">Avoid</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item avoid-item"><i class="ti ti-coffee g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Caffeine and stimulants</span>They amplify the sympathetic signal that's already overactive. Even moderate caffeine can meaningfully worsen resting palpitations in this cluster.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-bath g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Hot baths and saunas</span>Vasodilation drops blood pressure, triggering a compensatory heart rate spike — exactly the response you're trying to calm.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-stethoscope g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Assuming palpitations mean cardiac disease without ruling out autonomic dysfunction first</span>Most Long COVID palpitations are regulatory, not structural. Both deserve investigation, but autonomic dysfunction is far more common and frequently missed.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-soup g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Large, fast-eaten meals</span>The digestive demand triggers the same sympathetic-autonomic cascade you're working to quiet. Smaller meals eaten slowly are significantly better tolerated.</span></li>
+        </ul>
+        <hr class="card-divider">
+        <div class="articles-head"><i class="ti ti-books articles-head-icon" aria-hidden="true"></i><span class="articles-head-label">Go deeper</span></div>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/the-nervous-system-breaking-pointand?r=74xuvu" target="_blank"><i class="ti ti-activity ac-icon" aria-hidden="true"></i><span class="ac-text">The Nervous System Breaking Point — and How to Find Your Way Back</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/why-your-body-still-thinks-its-sick?r=74xuvu" target="_blank"><i class="ti ti-shield ac-icon" aria-hidden="true"></i><span class="ac-text">Your Body Got Really Good at Being Sick — the normalization nobody talks about</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/the-fire-that-wont-go-out?r=74xuvu" target="_blank"><i class="ti ti-flame ac-icon" aria-hidden="true"></i><span class="ac-text">The Fire That Won't Go Out</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
       </div>
 
-      <!-- Heart branch -->
-      <div class="step" id="step-heart">
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="question-box">
-          <div class="q-label">Follow-up</div>
-          <div class="q-text">Does your heart race or flutter even when you're sitting still or resting?</div>
-        </div>
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="branch-row two">
-          <button class="answer-btn" onclick="showCluster('autonomic')">Yes — at rest too, not just with activity</button>
-          <button class="answer-btn" onclick="choose('heart2')">More with movement — breathlessness is the main issue</button>
-        </div>
+      <!-- RESPIRATORY -->
+      <div id="cluster-respiratory" class="cluster-card c-blue">
+        <div class="cluster-eyebrow"><div class="cluster-dot"></div><span class="cluster-eyebrow-label">RECOVER cluster — respiratory</span></div>
+        <h2 class="cluster-headline">Your airways learned to stay on guard</h2>
+        <p class="cluster-desc">Persistent cough and breathlessness after COVID often reflect two overlapping problems: residual airway inflammation that hasn't fully resolved, and a sensitized cough reflex recalibrated during acute illness. The vagus nerve runs through the airways as well as the gut — and in Long COVID, vagal nerve irritation means the cough reflex fires at stimuli that wouldn't normally trigger it. Air temperature, talking, exercise, even laughing can set it off. This isn't your lungs failing. It's a reflex stuck at high sensitivity — and sensitivity can be retrained.</p>
+        <div class="section-head"><div class="section-icon do-icon" aria-hidden="true"><i class="ti ti-check"></i></div><span class="section-label do-label">Do</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item do-item"><i class="ti ti-nose g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Practice nasal breathing consistently</span>The nose filters, warms, and humidifies air in ways that calm the airway reflex. Mouth breathing bypasses all of this and is a direct irritant to a sensitized system.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-wind g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Use slow diaphragmatic breathing as a daily practice</span>Not just during symptoms — you're retraining the reflex, not managing individual episodes. Consistency over time is what shifts the baseline.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-chart-line g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Track breathlessness against exertion and recovery time</span>This gives you a measurable ceiling to work within and a clear way to see improvement over weeks — which is often too gradual to feel without data.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-temperature g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Identify and minimize known triggers</span>Cold dry air, strong scents, sudden temperature changes, and talking at length are among the most common. Knowing yours lets you manage exposure deliberately.</span></li>
+        </ul>
+        <div class="section-head"><div class="section-icon avoid-icon" aria-hidden="true"><i class="ti ti-x"></i></div><span class="section-label avoid-label">Avoid</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item avoid-item"><i class="ti ti-hand-stop g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Forcefully suppressing coughs</span>Holding back a sensitized cough can worsen the underlying hypersensitivity over time. Controlled breathing is more effective than suppression.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-virus g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Assuming the cough means ongoing infection</span>Post-viral cough from nerve sensitization is common and distinct from active illness. It requires retraining, not infection treatment.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-run g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Rushing back to aerobic exercise</span>Elevated breathing rate during exertion is a direct irritant to a sensitized airway reflex. Build duration before intensity, and watch your breathing rate as the signal.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-snowflake g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Cold, dry air without protection</span>Scarves or light masks in winter air are among the most practical interventions for this cluster.</span></li>
+        </ul>
+        <hr class="card-divider">
+        <div class="articles-head"><i class="ti ti-books articles-head-icon" aria-hidden="true"></i><span class="articles-head-label">Go deeper</span></div>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/the-nervous-system-breaking-pointand?r=74xuvu" target="_blank"><i class="ti ti-activity ac-icon" aria-hidden="true"></i><span class="ac-text">The Nervous System Breaking Point — and How to Find Your Way Back</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/the-fire-that-wont-go-out?r=74xuvu" target="_blank"><i class="ti ti-flame ac-icon" aria-hidden="true"></i><span class="ac-text">The Fire That Won't Go Out</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <span class="no-article" style="display:block;margin-top:6px;">A dedicated article on the respiratory cluster is in progress — check back soon.</span>
       </div>
 
-      <div class="step" id="step-heart2">
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="question-box">
-          <div class="q-label">Follow-up</div>
-          <div class="q-text">Do you also have a persistent cough that won't fully resolve?</div>
-        </div>
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="branch-row two">
-          <button class="answer-btn" onclick="showCluster('respiratory')">Yes — the cough has been ongoing</button>
-          <button class="answer-btn" onclick="showCluster('pem')">No — breathlessness without cough</button>
-        </div>
+      <!-- SENSORY / OLFACTORY -->
+      <div id="cluster-sensory" class="cluster-card c-coral">
+        <div class="cluster-eyebrow"><div class="cluster-dot"></div><span class="cluster-eyebrow-label">RECOVER cluster — sensory / olfactory</span></div>
+        <h2 class="cluster-headline">Your sensory pathways are in the process of rebuilding</h2>
+        <p class="cluster-desc">Olfactory neurons are unusual in the body: they're among the only neurons capable of true regeneration. COVID damages them through direct viral entry via ACE2 receptors in the nasal epithelium. The good news is that regeneration is biologically possible here in a way it isn't in most of the nervous system. The harder truth is that it's slow — 12 to 18 months is a realistic minimum. Parosmia (things smelling wrong or distorted) often arrives as a phase of recovery, not a sign things are getting worse. The rewiring is happening.</p>
+        <div class="section-head"><div class="section-icon do-icon" aria-hidden="true"><i class="ti ti-check"></i></div><span class="section-label do-label">Do</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item do-item"><i class="ti ti-refresh g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Smell training — twice daily, consistently</span>Brief exposure to 4 distinct scent categories (floral, fruity, spicy, resinous). The deliberate stimulation promotes olfactory neuron regeneration and is the most evidence-backed intervention available for this cluster.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-salad g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Keep eating even when food tastes wrong</span>Nutritional status directly affects nerve repair. Skipping meals because food is unpleasant compounds the deficit that's slowing recovery.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-calendar g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Track changes over weeks, not days</span>Improvement is usually too gradual to feel in real time but visible in retrospect. A weekly note on what you can and can't smell is more useful than daily monitoring.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-info-circle g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Know that parosmia is typically a mid-recovery phase</span>It means neurons are regenerating but haven't fully reconnected. It's a sign of progress, even though it doesn't feel like one.</span></li>
+        </ul>
+        <div class="section-head"><div class="section-icon avoid-icon" aria-hidden="true"><i class="ti ti-x"></i></div><span class="section-label avoid-label">Avoid</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item avoid-item"><i class="ti ti-clock-off g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Concluding recovery has stalled</span>Olfactory regeneration is genuinely slow and nonlinear. Absence of obvious progress over weeks is not absence of progress — it's the nature of nerve repair.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-wind g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Overpowering or heavily synthetic scents during smell training</span>They overwhelm and confuse the regenerating pathway. The goal is gentle, distinct, natural scents — not intensity.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-ban g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Skipping meals because food is unappealing</span>Appetite and taste often need to be rebuilt in parallel with smell recovery. Eating consistently — even without enjoyment — supports both.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-timeline g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Treating parosmia as a permanent state</span>It usually resolves as regeneration completes. Most people see meaningful improvement within 18–24 months with consistent smell training.</span></li>
+        </ul>
+        <hr class="card-divider">
+        <div class="articles-head"><i class="ti ti-books articles-head-icon" aria-hidden="true"></i><span class="articles-head-label">Go deeper</span></div>
+        <span class="no-article">A dedicated article on this cluster is in progress. In the meantime, these pieces address the immune activation and nervous system patterns that underlie it.</span>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/the-fire-that-wont-go-out?r=74xuvu" target="_blank" style="margin-top:10px;"><i class="ti ti-flame ac-icon" aria-hidden="true"></i><span class="ac-text">The Fire That Won't Go Out</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/the-nervous-system-breaking-pointand?r=74xuvu" target="_blank"><i class="ti ti-activity ac-icon" aria-hidden="true"></i><span class="ac-text">The Nervous System Breaking Point — and How to Find Your Way Back</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
       </div>
 
-      <!-- Smell / GI branch -->
-      <div class="step" id="step-smell">
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="question-box">
-          <div class="q-label">Follow-up</div>
-          <div class="q-text">Which is the bigger issue for you?</div>
-        </div>
-        <div class="connector"><div class="connector-line"></div></div>
-        <div class="branch-row two">
-          <button class="answer-btn" onclick="showCluster('sensory')">Smell or taste — absent, wrong, or distorted</button>
-          <button class="answer-btn" onclick="showCluster('gi')">Gut — nausea, bloating, food reactions</button>
-        </div>
+      <!-- GI -->
+      <div id="cluster-gi" class="cluster-card c-green">
+        <div class="cluster-eyebrow"><div class="cluster-dot"></div><span class="cluster-eyebrow-label">RECOVER cluster — gastrointestinal</span></div>
+        <h2 class="cluster-headline">Your gut-brain connection is misfiring</h2>
+        <p class="cluster-desc">Digestive symptoms in Long COVID often trace to three intersecting problems: depleted stomach acid (making nutrients unavailable even when eating well), damaged gut lining (triggering new food reactions), and disrupted vagal nerve signaling between gut and brain. You're not reacting to food. You're reacting to a gut that can no longer process it safely. The cruel irony: gut lining repair requires nutrients, but impaired absorption makes those nutrients harder to get — a loop that doesn't resolve without deliberate intervention.</p>
+        <div class="section-head"><div class="section-icon do-icon" aria-hidden="true"><i class="ti ti-check"></i></div><span class="section-label do-label">Do</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item do-item"><i class="ti ti-eye g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Eat slowly in a calm state — and look at your food first</span>The cephalic phase of digestion (triggered by seeing and smelling food) accounts for roughly 30% of stomach acid production. Three slow breaths before eating is a genuine physiological intervention.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-layout-rows g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Small, frequent meals over large ones</span>Smaller volumes are easier to process with compromised acid production and reduce the digestive demand on a system already working hard.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-leaf g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Bitter foods before meals</span>Arugula, dandelion greens, and apple cider vinegar stimulate stomach acid production naturally — the low-cost first step before considering supplements.</span></li>
+          <li class="guidance-item do-item"><i class="ti ti-clipboard-list g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Track food reactions to distinguish sensitivity from timing or stress</span>Many reactions that look like food sensitivity are actually timing, stress state, or meal size issues. Two weeks of simple before/after notes clarifies the real pattern.</span></li>
+        </ul>
+        <div class="section-head"><div class="section-icon avoid-icon" aria-hidden="true"><i class="ti ti-x"></i></div><span class="section-label avoid-label">Avoid</span></div>
+        <ul class="guidance-list">
+          <li class="guidance-item avoid-item"><i class="ti ti-device-laptop g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Eating while stressed or distracted</span>Sympathetic activation shunts blood away from digestion. Eating at a desk, in a difficult conversation, or while anxious significantly impairs the process regardless of what you're eating.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-list-x g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Long-term elimination diets without addressing gut lining</span>Removing foods manages symptoms but doesn't repair the underlying barrier. The list of reactive foods often keeps growing if the lining isn't addressed.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-pill g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">PPIs or acid reducers without medical guidance</span>Low stomach acid is more common than high in Long COVID gut dysfunction — adding acid suppression to a low-acid system worsens absorption and increases infection risk.</span></li>
+          <li class="guidance-item avoid-item"><i class="ti ti-clock-off g-icon" aria-hidden="true"></i><span class="g-text"><span class="g-lead">Assuming food sensitivity is permanent</span>Most food reactions in Long COVID reflect gut barrier integrity, not permanent intolerance. As the lining heals, the list of reactive foods typically narrows.</span></li>
+        </ul>
+        <hr class="card-divider">
+        <div class="articles-head"><i class="ti ti-books articles-head-icon" aria-hidden="true"></i><span class="articles-head-label">Go deeper</span></div>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/how-long-covid-turns-your-safest?r=74xuvu" target="_blank"><i class="ti ti-salad ac-icon" aria-hidden="true"></i><span class="ac-text">How Long COVID Turns Your Safest Foods Against You</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/long-covid-food-reactions-why-your?r=74xuvu" target="_blank"><i class="ti ti-list-details ac-icon" aria-hidden="true"></i><span class="ac-text">Long COVID Food Reactions: Why Your Safe List Keeps Shrinking</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
+        <a class="article-card" href="https://longcovidkari.substack.com/p/the-fuel-series-when-the-energy-door?r=74xuvu" target="_blank"><i class="ti ti-door ac-icon" aria-hidden="true"></i><span class="ac-text">How Long COVID Leaves Your Cells Starving Even When You're Eating Well</span><i class="ti ti-arrow-right ac-arrow" aria-hidden="true"></i></a>
       </div>
 
-      <!-- Outcome area -->
-      <div id="outcome">
-        <div class="connector"><div class="connector-line"></div></div>
+    </div><!-- end #outcome -->
 
-        <!-- PEM / Energy -->
-        <div id="cluster-pem" class="cluster-card c-amber">
-          <div class="cluster-tag">RECOVER cluster — post-exertional</div>
-          <div class="cluster-name">Your system is managing energy debt</div>
-          <div class="cluster-desc">Post-exertional malaise points to mitochondrial failure — your cellular power plants are damaged and can't recharge fast enough after use. Pushing past that limit depletes reserves that take days to rebuild. This isn't deconditioning. It's broken machinery trying to function anyway.</div>
-          <div class="guidance-grid">
-            <div class="guidance-col do-col">
-              <div class="g-head do">Do</div>
-              <ul>
-                <li>Track activity against next-day symptoms to find your real threshold</li>
-                <li>Rest before you feel you need to, not after the crash</li>
-                <li>Eat breakfast before coffee — gives your cortisol accurate information</li>
-                <li>Prioritize sleep quality over duration</li>
-              </ul>
-            </div>
-            <div class="guidance-col avoid-col">
-              <div class="g-head avoid">Avoid</div>
-              <ul>
-                <li>Pushing through — activity that feels fine today can crash you tomorrow</li>
-                <li>Skipping meals or fasting protocols</li>
-                <li>High-intensity exercise until your threshold expands</li>
-                <li>Using good days as proof you've recovered</li>
-              </ul>
-            </div>
-          </div>
-          <div class="article-links">
-            <div class="links-label">Go deeper</div>
-            <a class="article-link" href="https://www.lifebeyondlongcovid.com" target="_blank">↗ Why Long COVID Crashes Hit Without Warning — and Don't Respond to Rest</a>
-            <a class="article-link" href="https://www.lifebeyondlongcovid.com" target="_blank">↗ Why Long COVID Leaves You Running on Fumes by 2pm</a>
-            <a class="article-link" href="https://www.lifebeyondlongcovid.com" target="_blank">↗ How Long COVID Leaves Your Cells Starving Even When You're Eating Well</a>
-          </div>
-        </div>
+    <button class="reset-btn" id="reset-btn" onclick="resetFlow()">← Start over</button>
 
-        <!-- Cognitive -->
-        <div id="cluster-cognitive" class="cluster-card c-purple">
-          <div class="cluster-tag">RECOVER cluster — cognitive</div>
-          <div class="cluster-name">Your brain's signaling system is disrupted</div>
-          <div class="cluster-desc">Brain fog and emotional flatness in Long COVID often trace to dopamine suppression — the neurotransmitter that runs motivation, memory retrieval, and the felt sense of reward. When dopamine circuits are damaged, the words don't come and nothing feels worth doing. It's not depression. It's a disrupted signaling system.</div>
-          <div class="guidance-grid">
-            <div class="guidance-col do-col">
-              <div class="g-head do">Do</div>
-              <ul>
-                <li>Protect sleep — dopamine pathways restore during REM</li>
-                <li>Small, achievable tasks to generate dopamine hits without overwhelm</li>
-                <li>Natural light exposure in the morning supports dopamine rhythm</li>
-                <li>Reduce decision load — cognitive tax depletes faster when signaling is impaired</li>
-              </ul>
-            </div>
-            <div class="guidance-col avoid-col">
-              <div class="g-head avoid">Avoid</div>
-              <ul>
-                <li>Multitasking or constant context-switching</li>
-                <li>Caffeine as a substitute for rest</li>
-                <li>Screens late at night — disrupts the dopamine-sleep cycle</li>
-                <li>Interpreting flatness as a personal failing</li>
-              </ul>
-            </div>
-          </div>
-          <div class="article-links">
-            <div class="links-label">Go deeper</div>
-            <a class="article-link" href="https://www.lifebeyondlongcovid.com" target="_blank">↗ How Long COVID Suppresses Dopamine Production</a>
-            <a class="article-link" href="https://www.lifebeyondlongcovid.com" target="_blank">↗ REM Sleep, Brain Fog, and the Molecule Long COVID is Depleting</a>
-            <a class="article-link" href="https://www.lifebeyondlongcovid.com" target="_blank">↗ The Dopamine Protocol: A Field Report</a>
-          </div>
-        </div>
+  </div><!-- end .node-grid -->
+</div><!-- end .chart-wrap -->
 
-        <!-- Autonomic -->
-        <div id="cluster-autonomic" class="cluster-card c-teal">
-          <div class="cluster-tag">RECOVER cluster — autonomic</div>
-          <div class="cluster-name">Your nervous system's regulator is stuck</div>
-          <div class="cluster-desc">Palpitations, dizziness on standing, and unusual thirst point to autonomic dysregulation — the part of your nervous system that manages heart rate, blood pressure, and fluid balance without your conscious involvement. It got recalibrated during illness and hasn't found its way back to baseline.</div>
-          <div class="guidance-grid">
-            <div class="guidance-col do-col">
-              <div class="g-head do">Do</div>
-              <ul>
-                <li>Increase salt and fluid intake — autonomic dysfunction often involves low blood volume</li>
-                <li>Rise slowly from seated or lying positions</li>
-                <li>Consistent sleep and wake times — rhythm is regulating</li>
-                <li>Gentle horizontal movement (recumbent cycling, swimming) before upright exercise</li>
-              </ul>
-            </div>
-            <div class="guidance-col avoid-col">
-              <div class="g-head avoid">Avoid</div>
-              <ul>
-                <li>Hot showers or baths — vasodilation worsens orthostatic symptoms</li>
-                <li>Large meals — blood pools to digestion and away from the head</li>
-                <li>Standing still for long periods</li>
-                <li>Diuretics, including excess caffeine</li>
-              </ul>
-            </div>
-          </div>
-          <div class="article-links">
-            <div class="links-label">Go deeper</div>
-            <a class="article-link" href="https://www.lifebeyondlongcovid.com" target="_blank">↗ The Nervous System Breaking Point — and How to Find Your Way Back</a>
-            <a class="article-link" href="https://www.lifebeyondlongcovid.com" target="_blank">↗ You're Spending Your Energy Budget Fighting a War That's Already Over</a>
-          </div>
-        </div>
+<div class="page-footer">
+  <p>This tool is for educational purposes only and is not intended to diagnose, treat, cure, or prevent any medical condition. Clusters are based on the <a href="https://jamanetwork.com/journals/jama/fullarticle/2828329" target="_blank">2024 RECOVER-Adult Long COVID Research Index</a> published in JAMA.</p>
+  <p style="margin-top:8px;">© Kari Mitchell · <a href="https://longcovidkari.substack.com" target="_blank">Life Beyond Long COVID</a></p>
+</div>
 
-        <!-- Respiratory -->
-        <div id="cluster-respiratory" class="cluster-card c-blue">
-          <div class="cluster-tag">RECOVER cluster — respiratory</div>
-          <div class="cluster-name">Your airways are still in recovery mode</div>
-          <div class="cluster-desc">Chronic cough and breathlessness after COVID can reflect ongoing airway inflammation, hypersensitive respiratory nerves, or persistent immune activation in the lungs. The cough reflex gets sensitized — and once that happens, even normal triggers set it off. Your lungs aren't failing. They're hypervigilant.</div>
-          <div class="guidance-grid">
-            <div class="guidance-col do-col">
-              <div class="g-head do">Do</div>
-              <ul>
-                <li>Nasal breathing over mouth breathing wherever possible</li>
-                <li>Slow, diaphragmatic breathing to calm the respiratory reflex</li>
-                <li>Avoid known irritants — smoke, strong scents, cold dry air</li>
-                <li>Track breathlessness against activity to find your current ceiling</li>
-              </ul>
-            </div>
-            <div class="guidance-col avoid-col">
-              <div class="g-head avoid">Avoid</div>
-              <ul>
-                <li>Forcefully suppressing the cough — can worsen hypersensitivity</li>
-                <li>Exertion that significantly raises breathing rate until stable</li>
-                <li>Assuming improvement is linear — respiratory recovery fluctuates</li>
-              </ul>
-            </div>
-          </div>
-          <div class="article-links">
-            <div class="links-label">Go deeper</div>
-            <span class="no-article">We haven't written a dedicated article on this cluster yet — it's on the list. Check back soon.</span>
-          </div>
-        </div>
+<script>
+  var allSteps = ['step1','step-energy','step-energy2','step-brain','step-brain2','step-heart','step-heart2','step-smell'];
+  var allClusters = ['cluster-pem','cluster-pem-breath','cluster-cognitive','cluster-perfusion','cluster-autonomic','cluster-respiratory','cluster-sensory','cluster-gi'];
+  var pathHistory = [];
 
-        <!-- Sensory / Olfactory -->
-        <div id="cluster-sensory" class="cluster-card c-coral">
-          <div class="cluster-tag">RECOVER cluster — sensory / olfactory</div>
-          <div class="cluster-name">Your sensory pathways are slowly rewiring</div>
-          <div class="cluster-desc">Smell and taste changes — including parosmia (things smelling wrong) and phantom smells — reflect damage to olfactory neurons from viral entry. These neurons are among the few in the body capable of actual regeneration, which means this cluster often shows the most recovery over time. The process is slow and nonlinear, but it's real.</div>
-          <div class="guidance-grid">
-            <div class="guidance-col do-col">
-              <div class="g-head do">Do</div>
-              <ul>
-                <li>Smell training — brief daily exposure to 4 distinct scents activates regeneration</li>
-                <li>Keep eating even when food tastes wrong — nutrition supports nerve repair</li>
-                <li>Document changes over time — improvement is often too gradual to feel day-to-day</li>
-              </ul>
-            </div>
-            <div class="guidance-col avoid-col">
-              <div class="g-head avoid">Avoid</div>
-              <ul>
-                <li>Concluding recovery isn't happening — olfactory regeneration takes 12–18+ months</li>
-                <li>Overpowering scents during acute parosmia phases</li>
-                <li>Skipping meals because food is unappealing — appetite may need rebuilding separately</li>
-              </ul>
-            </div>
-          </div>
-          <div class="article-links">
-            <div class="links-label">Go deeper</div>
-            <span class="no-article">No dedicated article on this cluster yet — it's on the list. Check back soon.</span>
-          </div>
-        </div>
+  function hideAllSteps() {
+    for (var i = 0; i < allSteps.length; i++) {
+      var el = document.getElementById(allSteps[i]);
+      if (el) el.classList.remove('active');
+    }
+  }
 
-        <!-- GI -->
-        <div id="cluster-gi" class="cluster-card c-green">
-          <div class="cluster-tag">RECOVER cluster — gastrointestinal</div>
-          <div class="cluster-name">Your gut-brain connection is misfiring</div>
-          <div class="cluster-desc">Digestive symptoms in Long COVID often trace to three intersecting problems: depleted stomach acid (making nutrients unavailable even when eating well), damaged gut lining (triggering new food reactions), and disrupted vagal nerve signaling between gut and brain. You're not reacting to food. You're reacting to a gut that can no longer process it safely.</div>
-          <div class="guidance-grid">
-            <div class="guidance-col do-col">
-              <div class="g-head do">Do</div>
-              <ul>
-                <li>Eat slowly in a calm state — the cephalic phase of digestion needs a signal before food arrives</li>
-                <li>Small, frequent meals over large ones</li>
-                <li>Bitter foods before meals (arugula, dandelion) to stimulate stomach acid</li>
-                <li>Track food reactions to distinguish sensitivity from timing or stress triggers</li>
-              </ul>
-            </div>
-            <div class="guidance-col avoid-col">
-              <div class="g-head avoid">Avoid</div>
-              <ul>
-                <li>Eating while stressed or distracted — shunts blood away from digestion</li>
-                <li>Long-term elimination diets without addressing gut lining</li>
-                <li>PPIs or acid reducers without medical guidance — low acid is more common than high in LC</li>
-                <li>Assuming food sensitivity is permanent</li>
-              </ul>
-            </div>
-          </div>
-          <div class="article-links">
-            <div class="links-label">Go deeper</div>
-            <a class="article-link" href="https://www.lifebeyondlongcovid.com" target="_blank">↗ How Long COVID Turns Your Safest Foods Against You</a>
-            <a class="article-link" href="https://www.lifebeyondlongcovid.com" target="_blank">↗ Long COVID Food Reactions: Why Your Safe List Keeps Shrinking</a>
-          </div>
-        </div>
+  function choose(branch, label) {
+    if (label) pathHistory.push(label);
+    hideAllSteps();
+    var next = document.getElementById('step-' + branch);
+    if (next) next.classList.add('active');
+    document.getElementById('outcome').style.display = 'none';
+    document.getElementById('reset-btn').classList.remove('visible');
+  }
 
-      </div><!-- end #outcome -->
+  function goBack(targetStepId) {
+    if (pathHistory.length > 0) pathHistory.pop();
+    hideAllSteps();
+    var target = document.getElementById(targetStepId);
+    if (target) target.classList.add('active');
+    document.getElementById('outcome').style.display = 'none';
+    document.getElementById('reset-btn').classList.remove('visible');
+  }
 
-      <button class="reset-btn" id="reset-btn" onclick="resetFlow()">← Start over</button>
+  function showCluster(id) {
+    hideAllSteps();
+    var outcome = document.getElementById('outcome');
+    outcome.style.display = 'flex';
 
-    </div><!-- end .node-grid -->
-  </div><!-- end .chart-wrap -->
-
-  <div class="page-footer">
-    <p>This tool is for educational purposes only and is not intended to diagnose, treat, cure, or prevent any medical condition. Clusters are based on the <a href="https://jamanetwork.com/journals/jama/fullarticle/2828329" target="_blank">2024 RECOVER-Adult Long COVID Research Index</a> published in JAMA.</p>
-    <p style="margin-top: 8px;">© Kari Mitchell · <a href="https://www.lifebeyondlongcovid.com" target="_blank">lifebeyondlongcovid.com</a></p>
-  </div>
-
-  <script>
-    var allSteps = ['step1','step-energy','step-energy2','step-brain','step-brain2','step-heart','step-heart2','step-smell'];
-    var allClusters = ['cluster-pem','cluster-cognitive','cluster-autonomic','cluster-respiratory','cluster-sensory','cluster-gi'];
-
-    function hideAllSteps() {
-      for (var i = 0; i < allSteps.length; i++) {
-        var el = document.getElementById(allSteps[i]);
-        if (el) el.classList.remove('active');
-      }
+    for (var i = 0; i < allClusters.length; i++) {
+      var el = document.getElementById(allClusters[i]);
+      if (el) { el.style.display = 'none'; el.classList.remove('visible'); }
     }
 
-    function choose(branch) {
-      hideAllSteps();
-      var next = document.getElementById('step-' + branch);
-      if (next) next.classList.add('active');
-      document.getElementById('outcome').style.display = 'none';
-      document.getElementById('reset-btn').classList.remove('visible');
+    var target = document.getElementById('cluster-' + id);
+    if (target) {
+      target.style.display = 'block';
+      setTimeout(function(t) { return function() { t.classList.add('visible'); }; }(target), 30);
     }
 
-    function showCluster(id) {
-      hideAllSteps();
-      var outcome = document.getElementById('outcome');
-      outcome.style.display = 'flex';
+    updateOutcomeCrumb();
+    document.getElementById('reset-btn').classList.add('visible');
+    setTimeout(function() { outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 80);
+  }
 
-      for (var i = 0; i < allClusters.length; i++) {
-        var el = document.getElementById(allClusters[i]);
-        if (el) {
-          el.style.display = 'none';
-          el.classList.remove('visible');
-        }
-      }
-
-      var target = document.getElementById('cluster-' + id);
-      if (target) {
-        target.style.display = 'block';
-        setTimeout(function(t) {
-          return function() { t.classList.add('visible'); };
-        }(target), 30);
-      }
-
-      document.getElementById('reset-btn').classList.add('visible');
-
-      setTimeout(function() {
-        outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 80);
+  function updateOutcomeCrumb() {
+    var inner = document.getElementById('bc-outcome-inner');
+    if (!inner || pathHistory.length === 0) return;
+    var html = '<span class="breadcrumb-label">Your path:</span>';
+    for (var i = 0; i < pathHistory.length; i++) {
+      if (i > 0) html += '<span class="crumb-sep">›</span>';
+      html += '<span class="crumb">' + pathHistory[i] + '</span>';
     }
+    inner.innerHTML = html;
+  }
 
-    function resetFlow() {
-      hideAllSteps();
-      document.getElementById('step1').classList.add('active');
-      document.getElementById('outcome').style.display = 'none';
-      document.getElementById('reset-btn').classList.remove('visible');
-      for (var i = 0; i < allClusters.length; i++) {
-        var el = document.getElementById(allClusters[i]);
-        if (el) {
-          el.style.display = 'none';
-          el.classList.remove('visible');
-        }
-      }
+  function resetFlow() {
+    pathHistory = [];
+    hideAllSteps();
+    document.getElementById('step1').classList.add('active');
+    document.getElementById('outcome').style.display = 'none';
+    document.getElementById('reset-btn').classList.remove('visible');
+    for (var i = 0; i < allClusters.length; i++) {
+      var el = document.getElementById(allClusters[i]);
+      if (el) { el.style.display = 'none'; el.classList.remove('visible'); }
     }
-  </script>
+    var inner = document.getElementById('bc-outcome-inner');
+    if (inner) inner.innerHTML = '';
+  }
+</script>
 
 </body>
 </html>
